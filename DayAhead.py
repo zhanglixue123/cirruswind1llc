@@ -6,15 +6,15 @@ import os
 import urllib3
 
 
-# 下载文件函数
+# 下载文件函数  Download files
 def DownLoad():
     http = urllib3.PoolManager()
     response = http.request('GET', url)
     with open(csv_file_name, 'wb') as f:
         f.write(response.data)
 
-## 下载
-# 设置文件名
+## 下载 Download
+# 设置文件名 set filename
 year = '2018'
 month = '06'
 
@@ -40,14 +40,14 @@ for i in range(1, 32):
         DownLoad()
 
 
-    #新建excel文件
+    #新建excel文件 create excel 
     myexcel = xlwt.Workbook()
     sheet1 = myexcel.add_sheet(u'sheet1',cell_overwrite_ok=True)   # 创建sheet
 
-    #读取文件信息
+    #读取文件信息 read csv
     if os.path.getsize(csv_file_name):
         file_data = pd.read_csv(csv_file_name, usecols=['Interval', 'Pnode', 'LMP'], encoding='gbk')
-        # 找cirruswind
+        # 找cirruswind  find cirruswind
         for find_i in range(0, file_data.shape[0]):
             CIRRUSWIND = file_data.loc[find_i]
             if 'CIRRUS' in CIRRUSWIND[1]:
@@ -55,7 +55,7 @@ for i in range(1, 32):
                 Name = CIRRUSWIND[1]
                 LMP = CIRRUSWIND[2]
                 print('Time=',Time,'Name=',Name,'LMP=',LMP)
-                # 写入excel
+                # 写入excel  write excel
                 for a in range(0,12):
                     sheet1.write(k+a, 0, Time)
                     sheet1.write(k+a, 1, LMP)
