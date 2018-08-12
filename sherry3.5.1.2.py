@@ -1,4 +1,6 @@
 # 此版本不用登录微信，可以在出门的时候万一掉网了使用~
+# Working software for my job, for replacing the manual work
+
 import urllib3
 import socket
 import pandas as pd
@@ -8,7 +10,7 @@ import win32api
 import win32con
 from ctypes import *
 
-# 定义下载文件函数
+# 定义下载文件函数  Scrapy engine
 def DownLoad():
     try:
         headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'}
@@ -25,20 +27,20 @@ def DownLoad():
         os.system("start C:\下载文件失败.txt")
         pass
 
-# 定义剪切板函数
+# 定义剪切板函数 Clipboard 
 def addToClipBoard(text):
     command = 'echo ' + text.strip() + '| clip'
     os.system(command)
 
-# 定义自动修改功率函数
+# 定义自动修改功率函数 Modify the Output of Power Control Platform
 def AutoChangeMW():
-    # 打开teamviewer
+    # 打开teamviewer Open teamviewer page
     windll.user32.SetCursorPos(459, 744)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
     time.sleep(0.05)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
     time.sleep(0.05)
-    # 关闭对话框
+    # 关闭对话框  Close teamviewer page
     windll.user32.SetCursorPos(855, 417)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
     time.sleep(0.05)
@@ -59,24 +61,24 @@ def AutoChangeMW():
     time.sleep(0.05)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
     time.sleep(0.8)
-    # 打开功率设置
+    # 打开功率设置   Open power settings
     windll.user32.SetCursorPos(370, 130)  # 新电脑
     # windll.user32.SetCursorPos(313, 145)  # 老电脑
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
     time.sleep(0.05)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
     time.sleep(0.5)
-    # 选中
+    # 选中   Select
     windll.user32.SetCursorPos(655, 366)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
     time.sleep(0.05)
-    # 删掉原来的功率
+    # 删掉原来的功率  Delete
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
     win32api.keybd_event(8, 0, 0, 0)
     time.sleep(0.05)
     win32api.keybd_event(8, 0, win32con.KEYEVENTF_KEYUP, 0)
     time.sleep(0.25)
-    ## 记录调节过程
+    ## 记录调节过程  Record process of adjustment to txt files
     try:
         RecordFile = open(RecordFileName, 'a')
     except IOError:
@@ -93,25 +95,26 @@ def AutoChangeMW():
             RecordFile.write('新的电价： ' + str(LMP) + '，现在请调整出力为2000' + '\n')
         RecordFile.write('下载文件：' + csv_file_name + '\n')
         RecordFile.close()
-    # 修改功率
+    # 修改功率  Edit the output value
     win32api.keybd_event(17, 0, 0, 0)  # ctrl键位码是17
     win32api.keybd_event(86, 0, 0, 0)  # v键位码是86
     win32api.keybd_event(86, 0, win32con.KEYEVENTF_KEYUP, 0)  # 释放按键
     win32api.keybd_event(17, 0, win32con.KEYEVENTF_KEYUP, 0)
     time.sleep(0.5)
-    # 点击确定
+    # 点击确定  Click OK
     windll.user32.SetCursorPos(726, 364)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
     time.sleep(0.05)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
     time.sleep(0.2)
-    # 最小化teamviewer窗口
+    # 最小化teamviewer窗口   Minimize teamviewer 
     windll.user32.SetCursorPos(459, 744)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
     time.sleep(0.05)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
 
-## 开始运行
+## 开始运行  Start running
+# initial values
 LMP = -1111111111
 record = 3
 delay = 0
@@ -122,7 +125,7 @@ recover = 0
 BadPing = 0
 FileBuild = 0
 while(1):
-    # 新建记录文件
+    # 新建记录文件  Creat txt file
     RecordFileName = time.strftime('%Y%m%d', time.localtime(time.time())) + '_程序运行记录' + '.txt'
     if not os.path.exists(RecordFileName):
         if FileBuild == 0:
@@ -136,7 +139,7 @@ while(1):
                 RecordFile.write('\n' + '\n' + '***  ' + str(time.strftime('%Y-%m-%d', time.localtime(time.time()))) + '  电价监测程序运行记录' + '  ***' + '\n' + '\n')
                 RecordFile.close()  # 特别注意文件操作完毕后要close
             FileBuild = 1
-    # Part I: make the file name ####
+    # make the file name ####
     local_time = time.localtime(time.time())
     YEAR = time.strftime('%Y', local_time)
     MONTH = time.strftime('%m', local_time)
@@ -151,7 +154,7 @@ while(1):
         url = url_basis + url_part + '.csv'
         csv_file_name = url_part + '.csv'
 
-    # Part II: start the python engnine
+    # start the python engnine
         exit_code = os.system('ping www.google.com')
         if exit_code:
             if BadPing == 0:
@@ -177,8 +180,8 @@ while(1):
             else:
                 DownLoad()
 
-    # Part IV: Post-process the downloaded file
-            # 读取csv
+    # Post-process the downloaded file
+            # 读取csv readcsv
             if os.path.getsize(csv_file_name):
                 file_data = pd.read_csv(csv_file_name, usecols=['Interval', 'Pnode', 'LMP'], encoding='gbk')
                 # 找cirruswind
@@ -188,7 +191,7 @@ while(1):
                         Time = CIRRUSWIND[0]
                         Name = CIRRUSWIND[1]
                         LMP = CIRRUSWIND[2]
-                # 判断LMP有无正负变化
+                # 判断LMP有无正负变化  judge the LMP 
                 if LMP >= 0:
                     judgement = 1
                 else:
@@ -209,6 +212,7 @@ while(1):
                         RecordFile.write('下载文件：' + csv_file_name + '\n')
                         RecordFile.close()
                     AutoChangeMW()  # 防止程序重启后无法判断
+              #  weighted delay
                 if (judgement != record) | ((diff == 0) & (DIFF != 3) & (delay != 0) & (DIFF != 2)&(R_csv_file_name != csv_file_name)):
                     if record != 3:
                         recover = 0
@@ -224,7 +228,7 @@ while(1):
                                 RecordFile.write('持续观察，新的电价： ' + str(LMP) + '\n')
                             RecordFile.write('下载文件：' + csv_file_name + '\n')
                             RecordFile.close()
-                        # 还原
+                        # 还原 recover
                         if (DIFF != diff) & (diff != 0) & (DIFF != 2) & (DIFF != 3) & (Delay < 4) & (delay > 0):
                             delay = 0
                             print('还原，delay=', delay)
@@ -253,7 +257,7 @@ while(1):
                             else:
                                 delay = delay + 2
                                 print('delay=', delay)
-                        # 警报
+                        # 警报  alert
                         Delay = delay
                         print('Delay=', Delay)
                         if Delay >= 4:
