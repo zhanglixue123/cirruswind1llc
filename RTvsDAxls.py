@@ -44,7 +44,7 @@ sheet.write(1, 13, 'Wind>7')
 sheet.write(2, 13, 'Average')
 sheet.write(3, 13, 'Sum')
 
-# 公式
+# 公式 excel formulas
 for i in range(3, 8931):
     MoreThan9 = 'IF(H' + str(i) + '>9,"√","")'      # >9
     sheet.write(i-1, 8, xlwt.Formula(MoreThan9))
@@ -61,7 +61,7 @@ sheet.write(2, 14, xlwt.Formula('AVERAGE(L3:L8930)'))
 sheet.write(3, 14, xlwt.Formula('SUM(L3:L8930)'))
 
 
-### 导入数据
+### 导入数据 
 # real time
 workbook = xlrd.open_workbook(Real_Time_Support)
 booksheet = workbook.sheet_by_name(Support_sheet)
@@ -87,7 +87,7 @@ for i in range(0, nrows):
     sheet.write(i+2, 4, cell_TIME)
     sheet.write(i+2, 5, cell_DA)
 
-# 粘贴风速
+# 粘贴风速 paste wind speeds
 Windspeedxls = "F:\\Cirrus Wind 1\\研究DA和RT哪个好\\" + YEAR + MONTH + "_DA与RT对比\\windspeed\\" + YEAR + MONTH + " - 风速.xls"
 workbook = xlrd.open_workbook(Windspeedxls)
 for i in range(0, len(workbook.sheets())):
