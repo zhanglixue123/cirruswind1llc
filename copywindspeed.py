@@ -6,40 +6,36 @@ import os
 import time
 from ctypes import *
 
-# 输入年份和月份
-# print("年：")
-# YEAR = input()
-# print("月：")
-# MONTH = input()
+
 YEAR = '2018'
 MONTH = '06'
 
 
 
-# 点击
+# 点击 click
 def ClickLeft():
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
     time.sleep(0.05)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
     time.sleep(0.5)
 
-# 点击风机号
+# 点击风机号 click machine number 
 def ClickFanNum():
     windll.user32.SetCursorPos(240, 155)
     ClickLeft()
 
-# 点击滚动条 向上
+# 点击滚动条 向上 click scroll bar upward
 def ReturnUp():
     for k in range(0, 9):  # range(0, 9)
         windll.user32.SetCursorPos(251, 166)
         ClickLeft()
 
-# 点击获取
+# 点击获取 get
 def ClickGet():
     windll.user32.SetCursorPos(290, 155)
     ClickLeft()
 
-# 全选+复制
+# 全选+复制 alt+A, ctl+C
 def CtrlAandCtrlC():
     windll.user32.SetCursorPos(785, 317)
     ClickLeft()
@@ -53,7 +49,7 @@ def CtrlAandCtrlC():
     win32api.keybd_event(17, 0, win32con.KEYEVENTF_KEYUP, 0)
     time.sleep(0.7)
 
-# 保存文件
+# 保存文件 save 
 def SaveTXT():
     with open(filename, 'w') as fileobject:  # 使用‘w’来提醒python用写入的方式打开
         fileobject.write(sss.decode('utf-8'))
